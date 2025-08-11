@@ -23,4 +23,42 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Prevent zoom on mobile inputs */
+input[type="color"], input[type="date"], input[type="datetime"], 
+input[type="datetime-local"], input[type="email"], input[type="month"], 
+input[type="number"], input[type="password"], input[type="search"], 
+input[type="tel"], input[type="text"], input[type="time"], 
+input[type="url"], input[type="week"], select:focus, textarea {
+  font-size: 16px;
+}
+
+/* Smooth animations */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Hide scrollbars but keep functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari and Opera */
 }
