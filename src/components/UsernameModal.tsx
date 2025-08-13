@@ -25,8 +25,8 @@ export default function UsernameModal() {
 
         if (filteredValue.length === 0) {
             setError('')
-        } else if (filteredValue.length < 5) {
-            setError('Username must be exactly 5 letters')
+        } else if (filteredValue.length < 3) {
+            setError('Username must be 3-5 letters')
         } else if (validateUsername(filteredValue)) {
             setError('')
         } else {
@@ -67,7 +67,7 @@ export default function UsernameModal() {
                             type="text"
                             value={input}
                             onChange={handleInputChange}
-                            placeholder="ALICE"
+                            placeholder="BOB"
                             className={`
                 w-full px-4 py-3 text-center text-xl font-bold uppercase tracking-wider
                 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500
@@ -86,7 +86,7 @@ export default function UsernameModal() {
                         )}
                         {input.length > 0 && !error && (
                             <p className="mt-2 text-sm text-green-600">
-                                {5 - input.length === 0 ? 'Perfect!' : `${5 - input.length} more letters needed`}
+                                {input.length >= 3 ? 'Perfect!' : `${3 - input.length} more letters needed`}
                             </p>
                         )}
                     </div>
@@ -103,7 +103,7 @@ export default function UsernameModal() {
             `}
                         whileTap={isValid ? { scale: 0.98 } : {}}
                     >
-                        {isValid ? 'Join Party! 🚀' : 'Enter 5 Letters'}
+                        {isValid ? 'Join Party! 🚀' : 'Enter 3-5 Letters'}
                     </motion.button>
                 </form>
 

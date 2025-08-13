@@ -85,7 +85,7 @@ export default function AnimatedEmoji({ emoji }: AnimatedEmojiProps) {
                 <div className="text-2xl sm:text-4xl">
                     {emoji.emoji}
                 </div>
-                <div className="mt-1 px-2 py-1 bg-black/70 text-white text-xs font-medium rounded-md">
+                <div className="mt-0.5 px-1 py-1 bg-black/50 text-white text-xs font-medium rounded-md">
                     {emoji.username}
                 </div>
             </div>
