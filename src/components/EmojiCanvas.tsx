@@ -5,12 +5,9 @@ import { useSSEConnection } from '@/hooks/useSSEConnection'
 import { useEffect } from 'react'
 import AnimatedEmoji from './AnimatedEmoji'
 import { AnimatePresence } from 'framer-motion'
+import { config } from '@/config'
 
-interface EmojiCanvasProps {
-    serverUrl?: string
-}
-
-export default function EmojiCanvas({ serverUrl }: EmojiCanvasProps) {
+export default function EmojiCanvas() {
     const {
         activeEmojis,
         selectedEmoji,
@@ -18,9 +15,7 @@ export default function EmojiCanvas({ serverUrl }: EmojiCanvasProps) {
         clearOldEmojis
     } = useEmojiStore()
 
-    const { sendEmojiThrow } = useSSEConnection(serverUrl)
-
-    // Clean up old emojis periodically
+    const { sendEmojiThrow } = useSSEConnection(config.SSE_SERVER_URL)    // Clean up old emojis periodically
     useEffect(() => {
         const interval = setInterval(clearOldEmojis, 5000) // Every 5 seconds
         return () => clearInterval(interval)

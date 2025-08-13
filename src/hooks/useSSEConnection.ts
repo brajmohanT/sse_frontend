@@ -1,8 +1,9 @@
 import { useEffect, useRef } from 'react'
 import { useEmojiStore } from '@/store/emojiStore'
 import { EmojiInstance, EmojiThrowEvent, UserCountEvent, EmojiCleanupEvent, HeartbeatEvent } from '@/types/emoji'
+import { config } from '@/config'
 
-export const useSSEConnection = (serverUrl: string = 'http://localhost:3000') => {
+export const useSSEConnection = (serverUrl: string = config.SSE_SERVER_URL) => {
   const eventSourceRef = useRef<EventSource | null>(null)
   const {
     setConnection,
@@ -50,8 +51,8 @@ export const useSSEConnection = (serverUrl: string = 'http://localhost:3000') =>
               y: data.y,
               userId: data.userId,
               timestamp: data.timestamp,
-              vx: (Math.random() - 0.5) * 200, // Random horizontal velocity
-              vy: (Math.random() - 0.5) * 200  // Random vertical velocity
+              vx: 200, // Random horizontal velocity
+              vy: 200  // Random vertical velocity
             }
             
             addEmoji(emojiInstance)

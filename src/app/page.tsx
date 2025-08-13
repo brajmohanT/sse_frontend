@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <div className="relative w-full h-screen overflow-hidden">
       {/* Main Canvas */}
-      <EmojiCanvas serverUrl="http://localhost:3000" />
+      <EmojiCanvas />
 
       {/* UI Overlays */}
       <EmojiPicker />
