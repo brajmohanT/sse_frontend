@@ -15,6 +15,8 @@ interface EmojiStore {
   // User state
   onlineUsers: number
   userId: string
+  username: string | null
+  isUsernameSet: boolean
 
   // Actions
   setConnection: (connected: boolean, error?: string) => void
@@ -24,6 +26,7 @@ interface EmojiStore {
   updateEmojiPosition: (id: string, x: number, y: number, vx?: number, vy?: number) => void
   setSelectedEmoji: (emoji: string) => void
   setUserCount: (count: number) => void
+  setUsername: (username: string) => void
   throwEmoji: (emoji: string, x: number, y: number) => void
   clearOldEmojis: () => void
 }
@@ -43,6 +46,8 @@ export const useEmojiStore = create<EmojiStore>((set, get) => ({
   throwHistory: [],
   onlineUsers: 0,
   userId: generateUserId(),
+  username: null,
+  isUsernameSet: false,
 
   // Actions
   setConnection: (connected, error) => 
@@ -74,12 +79,17 @@ export const useEmojiStore = create<EmojiStore>((set, get) => ({
   setUserCount: (count) => 
     set({ onlineUsers: count }),
 
+  setUsername: (username) => 
+    set({ username, isUsernameSet: true }),
+
   throwEmoji: (emoji, x, y) => {
+    const state = get()
     const newThrow: EmojiThrow = {
       emoji,
       x,
       y,
-      userId: get().userId,
+      userId: state.userId,
+      username: state.username || 'Guest',
       timestamp: Date.now()
     }
     

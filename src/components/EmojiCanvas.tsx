@@ -12,7 +12,8 @@ export default function EmojiCanvas() {
         activeEmojis,
         selectedEmoji,
         throwEmoji,
-        clearOldEmojis
+        clearOldEmojis,
+        isUsernameSet
     } = useEmojiStore()
 
     const { sendEmojiThrow } = useSSEConnection(config.SSE_SERVER_URL)    // Clean up old emojis periodically
@@ -22,6 +23,9 @@ export default function EmojiCanvas() {
     }, [clearOldEmojis])
 
     const handleCanvasClick = async (event: React.MouseEvent<HTMLDivElement>) => {
+        // Don't allow throwing if username not set
+        if (!isUsernameSet) return
+
         const rect = event.currentTarget.getBoundingClientRect()
         const x = event.clientX - rect.left
         const y = event.clientY - rect.top

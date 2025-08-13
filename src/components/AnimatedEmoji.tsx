@@ -81,8 +81,13 @@ export default function AnimatedEmoji({ emoji }: AnimatedEmojiProps) {
                 rotate: { duration: 3, repeat: Infinity, ease: "easeInOut" }
             }}
         >
-            <div className="text-2xl sm:text-4xl transform -translate-x-1/2 -translate-y-1/2">
-                {emoji.emoji}
+            <div className="flex flex-col items-center transform -translate-x-1/2 -translate-y-1/2">
+                <div className="text-2xl sm:text-4xl">
+                    {emoji.emoji}
+                </div>
+                <div className="mt-1 px-2 py-1 bg-black/70 text-white text-xs font-medium rounded-md">
+                    {emoji.username}
+                </div>
             </div>
         </motion.div>
     )

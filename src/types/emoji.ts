@@ -4,6 +4,7 @@ export interface EmojiInstance {
   x: number
   y: number
   userId: string
+  username: string
   timestamp: number
   vx?: number // velocity x
   vy?: number // velocity y
@@ -14,6 +15,7 @@ export interface EmojiThrow {
   x: number
   y: number
   userId: string
+  username: string
   timestamp: number
 }
 

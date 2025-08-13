@@ -11,7 +11,8 @@ export const useSSEConnection = (serverUrl: string = config.SSE_SERVER_URL) => {
     addEmoji,
     removeEmojis,
     setUserCount,
-    userId
+    userId,
+    username
   } = useEmojiStore()
 
   useEffect(() => {
@@ -50,6 +51,7 @@ export const useSSEConnection = (serverUrl: string = config.SSE_SERVER_URL) => {
               x: data.x,
               y: data.y,
               userId: data.userId,
+              username: data.username,
               timestamp: data.timestamp,
               vx: 200, // Random horizontal velocity
               vy: 200  // Random vertical velocity
@@ -122,6 +124,7 @@ export const useSSEConnection = (serverUrl: string = config.SSE_SERVER_URL) => {
           x,
           y,
           userId,
+          username: username || 'Guest',
           timestamp: Date.now()
         })
       })
