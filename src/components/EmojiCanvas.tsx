@@ -2,6 +2,7 @@
 
 import { useEmojiStore } from '@/store/emojiStore'
 import { useSSEConnection } from '@/hooks/useSSEConnection'
+// import { useGlobalAnimationLoop } from '@/hooks/useGlobalAnimationLoop' // Temporarily disabled
 import { useEffect } from 'react'
 import AnimatedEmoji from './AnimatedEmoji'
 import { AnimatePresence } from 'framer-motion'
@@ -16,7 +17,12 @@ export default function EmojiCanvas() {
         isUsernameSet
     } = useEmojiStore()
 
-    const { sendEmojiThrow } = useSSEConnection(config.SSE_SERVER_URL)    // Clean up old emojis periodically
+    const { sendEmojiThrow } = useSSEConnection(config.SSE_SERVER_URL)
+
+    // Initialize global animation loop
+    // useGlobalAnimationLoop() // Temporarily disabled for testing
+
+    // Clean up old emojis periodically
     useEffect(() => {
         const interval = setInterval(clearOldEmojis, 5000) // Every 5 seconds
         return () => clearInterval(interval)

@@ -53,8 +53,8 @@ export const useSSEConnection = (serverUrl: string = config.SSE_SERVER_URL) => {
               userId: data.userId,
               username: data.username,
               timestamp: data.timestamp,
-              vx: 200, // Random horizontal velocity
-              vy: 200  // Random vertical velocity
+              vx: (Math.random() - 0.5) * 100, // Random horizontal velocity
+              vy: (Math.random() - 0.5) * 100 - 50  // Slight upward bias
             }
             
             addEmoji(emojiInstance)

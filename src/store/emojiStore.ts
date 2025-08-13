@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { EmojiInstance, EmojiThrow } from '@/types/emoji'
+import { config } from '@/config'
 
 interface EmojiStore {
   // Connection state
@@ -57,9 +58,19 @@ export const useEmojiStore = create<EmojiStore>((set, get) => ({
     set({ lastHeartbeat: timestamp }),
 
   addEmoji: (emoji) => 
-    set((state) => ({
-      activeEmojis: [...state.activeEmojis, emoji]
-    })),
+    set((state) => {
+      let newActiveEmojis = [...state.activeEmojis, emoji]
+      
+      // Limit max emojis on screen
+      if (newActiveEmojis.length > config.MAX_EMOJIS_ON_SCREEN) {
+        // Remove oldest emojis first
+        newActiveEmojis = newActiveEmojis
+          .sort((a, b) => b.timestamp - a.timestamp)
+          .slice(0, config.MAX_EMOJIS_ON_SCREEN)
+      }
+      
+      return { activeEmojis: newActiveEmojis }
+    }),
 
   removeEmojis: (emojiIds) =>
     set((state) => ({
@@ -93,6 +104,8 @@ export const useEmojiStore = create<EmojiStore>((set, get) => ({
       timestamp: Date.now()
     }
     
+    // Only add to throw history, don't add to activeEmojis
+    // The emoji will be added when it comes back from SSE server
     set((state) => ({
       throwHistory: [...state.throwHistory.slice(-99), newThrow] // Keep last 100 throws
     }))
@@ -100,11 +113,10 @@ export const useEmojiStore = create<EmojiStore>((set, get) => ({
 
   clearOldEmojis: () => {
     const now = Date.now()
-    const maxAge = 60000 // 60 seconds
     
     set((state) => ({
       activeEmojis: state.activeEmojis.filter(emoji => 
-        now - emoji.timestamp < maxAge
+        now - emoji.timestamp < config.EMOJI_MAX_AGE
       )
     }))
   }

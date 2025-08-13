@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { EmojiInstance } from '@/types/emoji'
-import { useEmojiStore } from '@/store/emojiStore'
+import { config } from '@/config'
 
 interface AnimatedEmojiProps {
     emoji: EmojiInstance
@@ -12,7 +12,6 @@ interface AnimatedEmojiProps {
 export default function AnimatedEmoji({ emoji }: AnimatedEmojiProps) {
     const [position, setPosition] = useState({ x: emoji.x, y: emoji.y })
     const [velocity, setVelocity] = useState({ vx: emoji.vx || 0, vy: emoji.vy || 0 })
-    const updateEmojiPosition = useEmojiStore(state => state.updateEmojiPosition)
 
     useEffect(() => {
         let animationId: number
@@ -39,9 +38,6 @@ export default function AnimatedEmoji({ emoji }: AnimatedEmojiProps) {
                     setVelocity({ vx: newVx, vy: newVy })
                 }
 
-                // Update store
-                updateEmojiPosition(emoji.id, newX, newY, newVx, newVy)
-
                 return { x: newX, y: newY }
             })
 
@@ -55,15 +51,15 @@ export default function AnimatedEmoji({ emoji }: AnimatedEmojiProps) {
                 cancelAnimationFrame(animationId)
             }
         }
-    }, [emoji.id, updateEmojiPosition, velocity.vx, velocity.vy])
+    }, [velocity.vx, velocity.vy])
 
     // Calculate age for fade out
     const age = Date.now() - emoji.timestamp
-    const maxAge = 60000 // 60 seconds
-    const opacity = Math.max(0, 1 - (age / maxAge))
+    const opacity = Math.max(0, 1 - (age / config.EMOJI_MAX_AGE))
 
     return (
         <motion.div
+            data-emoji-id={emoji.id}
             className="fixed pointer-events-none z-40 select-none"
             style={{
                 left: position.x,
@@ -73,19 +69,19 @@ export default function AnimatedEmoji({ emoji }: AnimatedEmojiProps) {
             initial={{ scale: 0, rotate: 0 }}
             animate={{
                 scale: 1,
-                rotate: [0, 5, -5, 0],
+                rotate: [0, 3, -3, 0], // Reduced rotation for performance
             }}
             exit={{ scale: 0, opacity: 0 }}
             transition={{
                 scale: { type: "spring", stiffness: 300, damping: 20 },
-                rotate: { duration: 3, repeat: Infinity, ease: "easeInOut" }
+                rotate: { duration: 4, repeat: Infinity, ease: "easeInOut" } // Slower rotation
             }}
         >
             <div className="flex flex-col items-center transform -translate-x-1/2 -translate-y-1/2">
                 <div className="text-2xl sm:text-4xl">
                     {emoji.emoji}
                 </div>
-                <div className="mt-0.5 px-1 py-1 bg-black/50 text-white text-xs font-medium rounded-md">
+                <div className="mt-1 px-2 py-1 bg-black/70 text-white text-xs font-medium rounded-md">
                     {emoji.username}
                 </div>
             </div>
