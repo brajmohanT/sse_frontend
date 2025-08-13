@@ -9,15 +9,21 @@ const POPULAR_EMOJIS = [
 ]
 
 export default function EmojiPicker() {
-    const { selectedEmoji, setSelectedEmoji } = useEmojiStore()
+    const { selectedEmoji, setSelectedEmoji, isUsernameSet } = useEmojiStore()
 
     return (
-        <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 w-full px-4">
+        <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-30 w-full px-4">
             <motion.div
                 initial={{ y: 50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                className="bg-white/95 backdrop-blur-sm rounded-xl shadow-lg border border-white/30 p-3 mx-auto max-w-lg"
+                className={`bg-white/95 backdrop-blur-sm rounded-xl shadow-lg border border-white/30 p-3 mx-auto max-w-lg transition-opacity ${!isUsernameSet ? 'opacity-50' : ''
+                    }`}
             >
+                {!isUsernameSet && (
+                    <div className="text-center text-xs text-gray-500 mb-2">
+                        Set username above to enable emoji throwing
+                    </div>
+                )}
                 {/* Mobile: Horizontal scroll, Desktop: Grid */}
                 <div className="sm:hidden">
                     {/* Mobile: Single row scrollable */}
@@ -25,9 +31,11 @@ export default function EmojiPicker() {
                         {POPULAR_EMOJIS.map((emoji) => (
                             <motion.button
                                 key={emoji}
-                                onClick={() => setSelectedEmoji(emoji)}
+                                onClick={() => isUsernameSet && setSelectedEmoji(emoji)}
+                                disabled={!isUsernameSet}
                                 className={`
                   flex-shrink-0 w-12 h-12 text-2xl rounded-xl transition-all duration-200
+                  ${!isUsernameSet ? 'cursor-not-allowed' : ''}
                   ${selectedEmoji === emoji
                                         ? 'bg-blue-500 shadow-md scale-110'
                                         : 'bg-gray-100 active:scale-95'
@@ -53,9 +61,11 @@ export default function EmojiPicker() {
                     {POPULAR_EMOJIS.map((emoji) => (
                         <motion.button
                             key={emoji}
-                            onClick={() => setSelectedEmoji(emoji)}
+                            onClick={() => isUsernameSet && setSelectedEmoji(emoji)}
+                            disabled={!isUsernameSet}
                             className={`
                 w-12 h-12 text-2xl rounded-lg transition-all duration-200
+                ${!isUsernameSet ? 'cursor-not-allowed' : ''}
                 ${selectedEmoji === emoji
                                     ? 'bg-blue-500 shadow-md scale-110'
                                     : 'bg-gray-100 hover:bg-gray-200 active:scale-95'

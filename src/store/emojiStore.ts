@@ -37,6 +37,33 @@ const generateUserId = () => {
   return Math.random().toString(36).substring(2) + Date.now().toString(36)
 }
 
+const loadUsernameFromStorage = (): { username: string | null; isUsernameSet: boolean } => {
+  if (typeof window === 'undefined') return { username: null, isUsernameSet: false }
+  
+  try {
+    const stored = localStorage.getItem('emojiPartyUsername')
+    if (stored && stored.length >= 3 && stored.length <= 5) {
+      return { username: stored, isUsernameSet: true }
+    }
+  } catch (error) {
+    console.warn('Failed to load username from localStorage:', error)
+  }
+  
+  return { username: null, isUsernameSet: false }
+}
+
+// Save username to localStorage
+const saveUsernameToStorage = (username: string) => {
+  if (typeof window === 'undefined') return
+  
+  try {
+    localStorage.setItem('emojiPartyUsername', username)
+  } catch (error) {
+    console.warn('Failed to save username to localStorage:', error)
+  }
+}
+
+
 export const useEmojiStore = create<EmojiStore>((set, get) => ({
   // Initial state
   isConnected: false,
@@ -47,8 +74,8 @@ export const useEmojiStore = create<EmojiStore>((set, get) => ({
   throwHistory: [],
   onlineUsers: 0,
   userId: generateUserId(),
-  username: null,
-  isUsernameSet: false,
+  username: loadUsernameFromStorage().username,
+  isUsernameSet: loadUsernameFromStorage().isUsernameSet,
 
   // Actions
   setConnection: (connected, error) => 
@@ -90,8 +117,10 @@ export const useEmojiStore = create<EmojiStore>((set, get) => ({
   setUserCount: (count) => 
     set({ onlineUsers: count }),
 
-  setUsername: (username) => 
-    set({ username, isUsernameSet: true }),
+  setUsername: (username) => {
+    saveUsernameToStorage(username)
+    set({ username, isUsernameSet: true })
+  },
 
   throwEmoji: (emoji, x, y) => {
     const state = get()

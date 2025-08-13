@@ -45,7 +45,7 @@ export default function EmojiCanvas() {
 
     return (
         <div
-            className="fixed inset-0 w-full h-full cursor-crosshair bg-gradient-to-br from-purple-100 via-pink-50 to-blue-100"
+            className="fixed inset-0 w-full h-full cursor-crosshair bg-gradient-to-br from-purple-100 via-pink-50 to-blue-100 pt-[60px] sm:pt-[72px]"
             onClick={handleCanvasClick}
         >
             {/* Background pattern */}
@@ -67,8 +67,12 @@ export default function EmojiCanvas() {
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none px-4">
                     <div className="text-center text-gray-500 max-w-sm">
                         <div className="text-4xl sm:text-6xl mb-4">🎯</div>
-                        <h2 className="text-lg sm:text-2xl font-bold mb-2">Tap to throw emojis!</h2>
-                        <p className="text-sm sm:text-lg hidden sm:block">Pick an emoji above and start the party!</p>
+                        <h2 className="text-lg sm:text-2xl font-bold mb-2">
+                            {isUsernameSet ? 'Tap to throw emojis!' : 'Enter username above to start!'}
+                        </h2>
+                        <p className="text-sm sm:text-lg hidden sm:block">
+                            {isUsernameSet ? 'Pick an emoji below and start the party!' : 'Set your username in the top bar first'}
+                        </p>
                     </div>
                 </div>
             )}
